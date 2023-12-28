@@ -16,7 +16,7 @@ import MenuApi from "./api/index.js";
 
 // TODO 사용자 경험
 //  - [x] API 통신이 실패하는 경우에 대해 사용자가 알 수 있게 alert으로 예외처리를 진행한다.
-// - [] 중복되는 메뉴는 추가할 수 없다.
+// - [x] 중복되는 메뉴는 추가할 수 없다.
 
 function App() {
   //  상태 = 변할 수 있는 데이터 : 메뉴명 상태관리
@@ -83,6 +83,15 @@ function App() {
       alert("값을 입력해주세요.");
       return;
     }
+
+    // 중복처리
+    const duplicatedItem = this.menu[this.currentCategory].find((menuItem) => menuItem.name === $("#menu-name").value);
+    if (duplicatedItem) {
+      alert("이미 등록된 메뉴입니다. 다시 입력해주세요");
+      $("#menu-name").value = "";
+      return;
+    }
+
     const menuName = $("#menu-name").value;
     // 현재 카테고리 속성
     await MenuApi.createMenu(this.currentCategory, menuName);
